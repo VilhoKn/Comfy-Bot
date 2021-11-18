@@ -1,0 +1,16 @@
+cat-https://cdn.discordapp.com/attachments/900712260937322529/907989896545849354/cat.png
+dog-https://cdn.discordapp.com/attachments/900712260937322529/907989915516694578/dog.png
+bunny-https://cdn.discordapp.com/attachments/900712260937322529/907989869912031232/bunny.png
+squirrel-https://cdn.discordapp.com/attachments/900712260937322529/907989995636285490/squirrel.png
+frog-https://cdn.discordapp.com/attachments/900712260937322529/907989930666500116/frog.png
+turtle-https://cdn.discordapp.com/attachments/900712260937322529/907990012639997962/turtle.png
+elephant-https://cdn.discordapp.com/attachments/900712260937322529/907989922709913672/elephant.png
+polarbear-https://cdn.discordapp.com/attachments/900712260937322529/907989967903539270/polarbear.png
+bear-https://cdn.discordapp.com/attachments/900712260937322529/907989857006145546/bear.png
+tiger-https://cdn.discordapp.com/attachments/900712260937322529/907990003567697941/tiger.png
+mouse-https://cdn.discordapp.com/attachments/900712260937322529/907989946088960100/mouse.png
+sheep-https://cdn.discordapp.com/attachments/900712260937322529/907989986639503360/sheep.png
+chicken-https://cdn.discordapp.com/attachments/900712260937322529/907989904984793158/chicken.png
+rooster-https://cdn.discordapp.com/attachments/900712260937322529/907989978846482432/rooster.png
+monkey-https://cdn.discordapp.com/attachments/900712260937322529/907989938388226078/monkey.png
+pig-https://cdn.discordapp.com/attachments/900712260937322529/907989958151770192/pig.png
