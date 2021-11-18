@@ -1342,5 +1342,5 @@ async def add_profile(author, member, item):
 #BOT RUN
 
 
-bot.run("OTA3NjY3NjYwNjUxNzYxNzM0.YYqhYQ.YBdz_WdjFVjZ98JfrHaw_qMBSn0")
+bot.run("OTAwNzA2MzMwMTgzMTAyNTI1.YXFOIw.bReD6jCeIj9Iqn2l7bMTi3_W_gQ")
 
