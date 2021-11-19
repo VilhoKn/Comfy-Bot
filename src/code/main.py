@@ -7,6 +7,12 @@ from discord.commands import Option
 
 #OTHER IMPORTS
 
+import sys
+
+sys.path.append("/home/pi/Documents/")
+
+from bot_token import TOKEN
+
 from webhook import send_webhook
 import time
 import datetime
@@ -1342,5 +1348,5 @@ async def add_profile(author, member, item):
 #BOT RUN
 
 
-bot.run("")
+bot.run(TOKEN)
 
