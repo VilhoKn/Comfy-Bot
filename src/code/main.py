@@ -148,7 +148,7 @@ PETS_3 = ["polarbear", "bear", "tiger", "elephant", "turtle"]
 
 FOODS = {"circle fruit" : 15, "triangle fruit" : 30, "square fruit" : 40, "star fruit" : 65, "small mushroom" : 10, "big mushroom" : 20, "watermelon" : 20, "bread" : 20, "lemon" : 20}
 
-FOODS_UP = ["Circle fruit", "Triangle fruit", "Square fruit", "Star fruit", "Small mushroom", "Big mushroom", "Watermelon", "Bread", "Lemon"]
+FOODS_UP = {"Circle fruit":":green_circle:", "Triangle fruit":":small_red_triangle:", "Square fruit":":purple_square:", "Star fruit":":star:", "Small mushroom":":mushroom:", "Big mushroom":"mushroom", "Watermelon":":watermelon:", "Bread":":bread:", "Lemon":":lemon:"}
 
 VÄRIT_UP = []
 
@@ -658,7 +658,7 @@ async def pet(ctx, name : Option(str, "Pet name", required=False, default=None))
 	await ctx.respond(embed=viesti)
 
 @bot.slash_command(name="feed", description="Feed your pet")
-async def feed(ctx, item : Option(str, "Item to feed", choices=FOODS_UP)):
+async def feed(ctx, item : Option(str, "Item to feed", choices=FOODS_UP.keys())):
 	await open_bank(ctx.author, ctx)
 	await open_pet(ctx.author)
 
@@ -846,7 +846,8 @@ async def inventory(ctx):
 	for k, v in b.inventory.items():
 		viesti.set_thumbnail(url="https://cdn.discordapp.com/attachments/900712260937322529/908763716743491584/inventory_apple.png")
 		if v != 0:
-			viesti.add_field(name=await first_up(k), value=f"Amount : {v}")
+			upp = await first_up(k)
+			viesti.add_field(name=f"{upp} {FOODS_UP[upp]}", value=f"Amount : {v}")
 			index += 1
 	if index == 0:
 		viesti.description = "You don't have any food! Buy them from `/shop`"
@@ -905,7 +906,7 @@ async def points(ctx):
 	await ctx.respond(embed=viesti)
 
 @bot.slash_command(name="shop", description="Buy food for your pet")
-async def shop(ctx, item : Option(str, "Item to buy", choices=FOODS_UP, required=False, default=None)):
+async def shop(ctx, item : Option(str, "Item to buy", choices=FOODS_UP.keys(), required=False, default=None)):
 	await open_bank(ctx.author, ctx)
 	b = await get_bank(ctx.author)
 
@@ -1311,8 +1312,8 @@ async def store_profile(member, objekti):
 	data = await get_profile_data()
 	g = str(member.guild.id)
 	u = str(member.id)
-	if objekti.send != False:
-		data[u]["profile"]["sent"] = objekti.send
+	if objekti.sent != False:
+		data[u]["profile"]["sent"] = objekti.sent
 	if objekti.received != False:
 		data[u]["profile"]["received"] = objekti.received
 	if objekti.description != False:
@@ -1326,14 +1327,14 @@ async def add_profile(author, member, item):
 	g = str(member.guild.id)
 	u = str(member.id)
 	ua = str(author.id)
-	s, r, d, cu = await get_profile(member)
-	r[item] += 1
-	sa, ra, da, cua = await get_profile(author)
-	sa[item] += 1
+	p = await get_profile(member)
+	p.received[item] += 1
+	pa = await get_profile(author)
+	pa.sent[item] += 1
 
-	await store_profile(member, profile_account(sent=False, received=r, description=False, color=False))
+	await store_profile(member, profile_account(sent=False, received=p.received, description=False, color=False))
 
-	await store_profile(member, profile_account(sent=sa, received=False, description=False, color=False))
+	await store_profile(member, profile_account(sent=pa.sent, received=False, description=False, color=False))
 
 
 
