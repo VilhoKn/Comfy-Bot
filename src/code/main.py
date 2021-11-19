@@ -576,7 +576,7 @@ async def search(ctx):
 	await store_pet(ctx.author, p)
 	current_time = int(time.time() / 60)
 
-	await set_interaction(p, current_time, ctx.author, True)
+	await set_interaction(p.pet, current_time, ctx.author, True)
 
 	p = await get_pet(ctx.author)
 
@@ -602,7 +602,6 @@ async def give(ctx):
 
 	await set_interaction(p.pet, 0, ctx.author, True)
 
-	await store_pet(ctx.author, p)
 	await reset_pet(ctx.author)
 
 	viesti = discord.Embed( description = f"You succesfully reset your pet {p.name}", color = green)
@@ -725,7 +724,7 @@ async def feed(ctx, item : Option(str, "Item to feed", choices=FOODS_UP)):
 		p = await get_pet(ctx.author)
 		
 		pet = await set_interaction(p.pet, current_time, ctx.author)
-		p.pet = pet
+
 	await store_pet(ctx.author, p)
 	p = await get_pet(ctx.author)
 	if not await is_alive(ctx.author):
@@ -1157,8 +1156,8 @@ async def reset_pet(member):
 
 
 async def has_pet(member):
-	n, h, ha, t, e, l, p = await get_pet(member)
-	if n == "":
+	p = await get_pet(member)
+	if p.name == "":
 		return False
 	return True
 
@@ -1278,7 +1277,7 @@ async def get_pet(member):
 	return pet_account(name=n, health=h, happiness=ha, _type=t, experience=e, level=l, pet=p)
 
 
-async def store_pet(member, objekti):
+async def store_pet(member, objekti, i=False):
 	data = await get_pet_data()
 	g = str(member.guild.id)
 	u = str(member.id)
@@ -1294,7 +1293,7 @@ async def store_pet(member, objekti):
 		data[u]["pet"]["experience"] = objekti.experience
 	if objekti.level != False:
 		data[u]["pet"]["level"] = objekti.level
-	if objekti.pet != False:
+	if i and objekti.pet != False:
 		data[u]["pet"] = objekti.pet
 	await dump_pet_data(data)
 
