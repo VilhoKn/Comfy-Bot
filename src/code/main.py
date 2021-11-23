@@ -627,7 +627,7 @@ async def pet(ctx, name : Option(str, "Pet name", required=False, default=None))
 
 	if not await is_alive(ctx.author):
 		await set_interaction(p.pet, 0, ctx.author, True)
-		viesti = discord.Embed(description = f"Your pet {p.name} has passed away", color = green)
+		viesti = discord.Embed(description = f"Your pet {p.name} is feeling really bad", color = green)
 		await ctx.respond(embed=viesti)
 		await reset_pet(ctx.author)
 		await store_pet(ctx.author, p)
@@ -735,7 +735,7 @@ async def feed(ctx, item : Option(str, "Item to feed", choices=FOODS_UP.keys()))
 	p = await get_pet(ctx.author)
 	if not await is_alive(ctx.author):
 		pet["interactions"] = {}
-		viesti = discord.Embed(description = f"Your pet {p.name} has passed away", color = green)
+		viesti = discord.Embed(description = f"Your pet {p.name} is feeling really bad", color = green)
 		await ctx.respond(embed=viesti)
 		await reset_pet(ctx.author)
 		await store_pet(ctx.author, p)
@@ -781,7 +781,7 @@ async def water(ctx):
 	p = await get_pet(ctx.author)
 	if not await is_alive(ctx.author):
 		await set_interaction(p.pet, 0, ctx.author, True)
-		viesti = discord.Embed(description = f"Your pet {p.name} has passed away", color = green)
+		viesti = discord.Embed(description = f"Your pet {p.name} is feeling really bad", color = green)
 		await ctx.respond(embed=viesti)
 		await reset_pet(ctx.author)
 		return
@@ -828,7 +828,7 @@ async def train(ctx):
 	p = await get_pet(ctx.author)
 	if not await is_alive(ctx.author):
 		await set_interaction(p.pet, 0, ctx.author, True)
-		viesti = discord.Embed(description = f"Your pet {p.name} has passed away", color = green)
+		viesti = discord.Embed(description = f"Your pet {p.name} is feeling really bad", color = green)
 		await ctx.respond(embed=viesti)
 		await reset_pet(ctx.author)
 
@@ -1076,9 +1076,9 @@ async def decay_stats(member, current_time):
 
     # Set all stats to 0 so they don't stay negative
 	if data[str(member.id)]["pet"]["health"] < 0:
-		data[str(member.id)]["pet"]["health"] = 0
+		data[str(member.id)]["pet"]["health"] = 1
 	if data[str(member.id)]["pet"]["happiness"] < 0:
-		data[str(member.id)]["pet"]["happiness"] = 0
+		data[str(member.id)]["pet"]["happiness"] = 1
 
 	await dump_pet_data(data)
 
