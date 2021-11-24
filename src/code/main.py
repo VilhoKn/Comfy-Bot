@@ -192,8 +192,10 @@ async def on_guild_join(guild):
 		print(f"Comfy joined '{guild.name}', Count: {guild.member_count}")
 	except:
 		print(f"Comfy joined '{guild.name}', Count: ERROR")
-
-	await send_webhook(guild, bot, True)
+	try:
+		await send_webhook(guild, bot, True)
+	except:
+		print("webhook error")
 
 @bot.event
 async def on_guild_remove(guild):
@@ -201,7 +203,10 @@ async def on_guild_remove(guild):
 		print(f"Comfy left '{guild.name}', Count: {guild.member_count}")
 	except:
 		print(f"Comfy left '{guild.name}', Count: ERROR")
-	await send_webhook(guild, bot, False)
+	try:
+		await send_webhook(guild, bot, False)
+	except:
+		print("webhook error")
 
 @bot.event
 async def on_ready():
