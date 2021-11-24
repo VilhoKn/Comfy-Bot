@@ -386,14 +386,16 @@ async def callbackname(ctx, member : discord.Member):
 async def gift(ctx, member : Option(discord.Member, "Gift receiver"), gift : Option(str, "The gift you want give")):
 	await open_profile(ctx.author)
 	await open_profile(member)
-	pref = f"{ctx.author.mention} gave x {gift} y"
+	pref = f"{ctx.author.mention} gave x gift11000 y"
 	if ctx.author.id != member.id:
 		pref = pref.replace("x", f"{member.mention}")
 		pref = pref.replace("y", "(´・ω・)っ由")
+		pref = pref.replace("gift11000", gift)
 		await add_profile(ctx.author, member, "gift")
 	else:
 		pref = pref.replace("x", "themselves")
 		pref = pref.replace("y", "(*・ω・)")
+		pref = pref.replace("gift11000", gift)
 	viesti = discord.Embed(description = pref, color = c)
 	viesti.set_image(url=random.choice(GIFT_LINKS))
 	await ctx.respond(embed=viesti)
