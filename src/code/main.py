@@ -1340,7 +1340,7 @@ async def add_profile(author, member, item):
 
 	await store_profile(member, profile_account(sent=False, received=p.received, description=False, color=False))
 
-	await store_profile(member, profile_account(sent=pa.sent, received=False, description=False, color=False))
+	await store_profile(author, profile_account(sent=pa.sent, received=False, description=False, color=False))
 
 
 
