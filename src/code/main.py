@@ -154,7 +154,7 @@ PETS_3 = ["polarbear", "bear", "tiger", "elephant", "turtle"]
 
 FOODS = {"circle fruit" : 15, "triangle fruit" : 30, "square fruit" : 40, "star fruit" : 65, "small mushroom" : 10, "big mushroom" : 20, "watermelon" : 20, "bread" : 20, "lemon" : 20}
 
-FOODS_UP = {"Circle fruit":":green_circle:", "Triangle fruit":":small_red_triangle:", "Square fruit":":purple_square:", "Star fruit":":star:", "Small mushroom":":mushroom:", "Big mushroom":"mushroom", "Watermelon":":watermelon:", "Bread":":bread:", "Lemon":":lemon:"}
+FOODS_UP = {"Circle fruit":":green_circle:", "Triangle fruit":":small_red_triangle:", "Square fruit":":purple_square:", "Star fruit":":star:", "Small mushroom":":mushroom:", "Big mushroom":":mushroom:", "Watermelon":":watermelon:", "Bread":":bread:", "Lemon":":lemon:"}
 
 VÄRIT_UP = []
 
