@@ -24,6 +24,7 @@ async def send_webhook(g, b, t):
 	else:
 		embed.title = f"{g.name}"
 		embed.color = 0xff000d
-
-	hook.send(embed=embed)
-
+	try:
+		hook.send(embed=embed)
+	except:
+		print("webhook error")
