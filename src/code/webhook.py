@@ -16,11 +16,7 @@ async def send_webhook(g, b, t):
 		embed.set_thumbnail(g.icon.url)
 	embed.add_field(name="Count", value=len(b.guilds))
 	if t:
-		gg = []
-		for i in b.guilds:
-			gg.append(i.name)
-		ggg = "\n".join(gg)
-		embed.add_field(name="Guilds", value=ggg)
+		pass
 	else:
 		embed.title = f"{g.name}"
 		embed.color = 0xff000d
