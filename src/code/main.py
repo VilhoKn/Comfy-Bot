@@ -11,8 +11,9 @@ import sys
 
 sys.path.append("/home/pi/Documents/")
 
-from bot_token import TOKEN
+from bot_token import TOKEN, DBL_TOKEN
 
+import dbl
 from webhook import send_webhook
 import time
 import datetime
@@ -1429,6 +1430,6 @@ async def add_profile(author, member, item):
 
 #BOT RUN
 
-
+dblpy = dbl.DBLClient(bot, DBL_TOKEN, autopost=True)
 bot.run(TOKEN)
 
