@@ -15,12 +15,22 @@ async def send_webhook(g, b, t):
 	if g.icon:
 		embed.set_thumbnail(g.icon.url)
 	embed.add_field(name="Count", value=len(b.guilds))
+	total_mem = 0
+	for i in b.guilds:
+		try:
+			total_mem += i.member_count
+		except Exception as e:
+			print(e)
+	embed.add_field(name="Total users", value=str(total_mem))
 	if t:
-		pass
+		gg = []
+		for i in b.guilds:
+			gg.append(i.name)
+		ggg = "\n".join(gg)
+		embed.add_field(name="Guilds", value=ggg)
 	else:
 		embed.title = f"{g.name}"
 		embed.color = 0xff000d
-	try:
-		hook.send(embed=embed)
-	except:
-		print("webhook error")
+
+	hook.send(embed=embed)
+

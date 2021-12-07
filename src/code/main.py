@@ -67,6 +67,16 @@ for i in range(1, 93):
 	else:
 		HUG_LINKS.append(pre_hug.replace("x", i))
 
+DUCK_IMAGE = []
+pre_duck = "https://random-d.uk/api/x.jpg"
+banned_ducks =  []
+
+for i in range(1, 283):
+	i = str(i)
+	if i in banned_hugs:
+		continue
+	DUCK_IMAGE.append(pre_duck.replace("x", i))
+
 
 
 with open("../files/text/on_message_trigger_words.txt", "r") as f:
@@ -239,6 +249,21 @@ async def on_message(message):
 
 #COMMANDS
 
+@bot.slash_command(name="dice", description="Rolls the dice")
+async def dice(ctx):
+	num = random.randint(1, 6)
+	viesti = discord.Embed(description = f"You rolled {num}!", color = c)
+	await ctx.respond(embed=viesti)
+	await update_commands("dice")
+
+@bot.slash_command(name="coinflip", description="Flips a coin")
+async def coinflip(ctx):
+	num = random.randint(1, 2)
+	value = "tails" if num == 1 else "heads"
+	viesti = discord.Embed(description = f"You got {value}!", color = c)
+	await ctx.respond(embed=viesti)
+	await update_commands("coinflip")
+
 @bot.slash_command(name="ineedhelp", description="Sends an info message about depression helplines in dms")
 async def ineedhelp(ctx):
 	viesti = discord.Embed(title="I Need Help Helplines", description = f"Here is information about helplines for depressed and suicidal people", color = c)
@@ -271,7 +296,7 @@ Text: Text "START" (without quotes) to 741-741.
 		await ctx.respond(embed=viesti2, ephemeral=True)
 	except:
 		await ctx.respond(embed=viesti, ephemeral=True)
-	return
+	await update_commands("ineedhelp")
 
 @bot.slash_command(name="quote", description="Sends a comfy quote")
 async def quote(ctx):
@@ -284,6 +309,7 @@ async def quote(ctx):
 	else:
 		viesti.set_footer(text=f"~ {author}")
 	await ctx.respond(embed=viesti)
+	await update_commands("quote")
 
 @bot.slash_command(name="hug", description="Give someone a hug")
 async def hug(ctx, member : Option(discord.Member, "Member to hug")):
@@ -300,6 +326,7 @@ async def hug(ctx, member : Option(discord.Member, "Member to hug")):
 	viesti = discord.Embed(description = pref, color = c)
 	viesti.set_image(url=random.choice(HUG_LINKS))
 	await ctx.respond(embed=viesti)
+	await update_commands("hug")
 
 @bot.user_command(name="Hug this person!")
 async def callbackname(ctx, member : discord.Member):
@@ -316,6 +343,7 @@ async def callbackname(ctx, member : discord.Member):
 	viesti = discord.Embed(description = pref, color = c)
 	viesti.set_image(url=random.choice(HUG_LINKS))
 	await ctx.respond(embed=viesti)
+	await update_commands("hug_user")
 
 @bot.slash_command(name="kiss", description="Kiss someone")
 async def kiss(ctx, member : Option(discord.Member, "Member to kiss")):
@@ -332,6 +360,7 @@ async def kiss(ctx, member : Option(discord.Member, "Member to kiss")):
 	viesti = discord.Embed(description = pref, color = c)
 	viesti.set_image(url=random.choice(KISS_LINKS))
 	await ctx.respond(embed=viesti)
+	await update_commands("kiss")
 
 @bot.user_command(name="Kiss this person!")
 async def callbackname(ctx, member : discord.Member):
@@ -348,6 +377,7 @@ async def callbackname(ctx, member : discord.Member):
 	viesti = discord.Embed(description = pref, color = c)
 	viesti.set_image(url=random.choice(KISS_LINKS))
 	await ctx.respond(embed=viesti)
+	await update_commands("kiss_user")
 
 @bot.slash_command(name="wave", description="Wave at someone")
 async def wave(ctx, member : Option(discord.Member, "Member to wave at")):
@@ -364,6 +394,7 @@ async def wave(ctx, member : Option(discord.Member, "Member to wave at")):
 	viesti = discord.Embed(description = pref, color = c)
 	viesti.set_image(url=random.choice(WAVE_LINKS))
 	await ctx.respond(embed=viesti)
+	await update_commands("wave")
 
 @bot.user_command(name="Wave at this person!")
 async def callbackname(ctx, member : discord.Member):
@@ -380,6 +411,7 @@ async def callbackname(ctx, member : discord.Member):
 	viesti = discord.Embed(description = pref, color = c)
 	viesti.set_image(url=random.choice(WAVE_LINKS))
 	await ctx.respond(embed=viesti)
+	await update_commands("wave_user")
 
 
 @bot.slash_command(name="gift", description="Give a gift to someone")
@@ -399,47 +431,61 @@ async def gift(ctx, member : Option(discord.Member, "Gift receiver"), gift : Opt
 	viesti = discord.Embed(description = pref, color = c)
 	viesti.set_image(url=random.choice(GIFT_LINKS))
 	await ctx.respond(embed=viesti)
+	await update_commands("gift")
 
 @bot.slash_command(name="cat", description="Send a cute cat picture")
 async def cat(ctx):
 	cat = random.choice(CAT_IMAGE)
 	await ctx.respond(cat)
+	await update_commands("cat")
 
 @bot.slash_command(name="dog", description="Send a cute dog picture")
 async def dog(ctx):
 	dog = random.choice(DOG_IMAGE)
 	await ctx.respond(dog)
+	await update_commands("dog")
 
 @bot.slash_command(name="bunny", description="Send a cute bunny picture")
 async def bunny(ctx):
 	bunny = random.choice(BUNNY_IMAGE)
 	await ctx.respond(bunny)
+	await update_commands("bunny")
+
+@bot.slash_command(name="duck", description="Send a cute duck picture")
+async def duck(ctx):
+	duck = random.choice(DUCK_IMAGE)
+	await ctx.respond(duck)
+	await update_commands("duck")
 
 @bot.slash_command(name="meme", description="Send a cute meme")
 async def meme(ctx):
 	mem = random.choice(MEMES)
 	await ctx.respond(mem)
+	await update_commands("meme")
 
 @bot.slash_command(name="cheerup", description="Send a cheerup meme")
 async def cheerup(ctx):
 	cheer = random.choice(CHEERUP)
 	await ctx.respond(cheer)
+	await update_commands("cheerup")
 
 @bot.slash_command(name="profilehelp", description="Sends a profile help message")
 async def profilehelp(ctx):
 	viesti = discord.Embed(title = "Profile help message", description = "Comfy Bot has 2 profile commands, `/profile` and `/myprofile`. These profiles are global across servers.\n\n`/profile` shows a members profile.\n\n`/myprofile` shows your own profile. You can also pass in a description and color to show on your profile. The description has a 150 character limit\n\nThe profile shows the users sent and received actions. Actions are `/hug`, `/kiss`, `/wave` and `/gift`\n\nHope this helps designing your profile!", color = c)
 	await ctx.respond(embed=viesti, ephemeral=True)
+	await update_commands("profilehelp")
 
 @bot.slash_command(name="help", description="Sends Comfy Bot help message")
 async def help(ctx):
 	viesti = discord.Embed(title = "Comfy Bot Help Message", description = "Comfy Bot is made to make others happy!\n It has tons of fun commands you can use!\nComfy uses `/` slash commmands like most popular bots.", color = c)
 	viesti.add_field(name="Word detection", value="Comfy bot has word detection that sends\n hope you're okay messages to the users sending depressing messages.", inline=False)
-	viesti.add_field(name=":frame_photo: Images", value="`/cat` `/dog` `/bunny`\n`/meme` `/cheerup`")
-	viesti.add_field(name=":busts_in_silhouette: Community", value="`/colorrole`\n`/ineedhelp` `/quote`")
+	viesti.add_field(name=":frame_photo: Images", value="`/cat` `/dog` `/bunny`\n`/duck` `/meme`\n`/cheerup`")
+	viesti.add_field(name=":busts_in_silhouette: Community", value="`/colorrole`\n`/ineedhelp` `/quote`\n`/dice` `/coinflip`")
 	viesti.add_field(name=":exclamation:Actions", value="`/hug` `/kiss`\n`/wave` `/gift`")
 	viesti.add_field(name="Other help commands", value="`/profilehelp` shows all Comfy Bots profile commands\n`/pethelp` shows all Comfy Bots pet commands", inline=False)
 	viesti.add_field(name="Quick Links", value="[Support Server](https://top.gg/servers/901214060740235275) • [Invite Me](https://discord.com/api/oauth2/authorize?client_id=900706330183102525&permissions=268437504&scope=bot%20applications.commands) • [Vote for me](https://top.gg/bot/900706330183102525)")
 	await ctx.respond(embed=viesti, ephemeral=True)
+	await update_commands("help")
 
 
 
@@ -460,6 +506,7 @@ async def colorrole(ctx, color : Option(str, "The color role you want", choices=
 				w_role = i
 				await ctx.author.add_roles(w_role)
 				await ctx.respond(embed=viesti_suc)
+				await update_commands("colorrole")
 				return
 	except:
 		viesti = discord.Embed(description = "Uh oh, I am missing permissions. My role might not be high enough to control color roles.", color = c)
@@ -469,8 +516,8 @@ async def colorrole(ctx, color : Option(str, "The color role you want", choices=
 		w_role = await ctx.guild.create_role(name=color, color=värit[color_fix])
 		await w_role.edit(position=ctx.me.top_role.position - 1)
 		await ctx.author.add_roles(w_role)
-			
 		await ctx.respond(embed=viesti_suc)
+		await update_commands("colorrole")
 	except Exception as e:
 		print(e)
 		viesti = discord.Embed(description = "Uh oh, I am missing permissions. My role might not have permissions to manage roles..", color = c)
@@ -499,6 +546,7 @@ Waves : {p.received["wave"]}
 Gifts : {p.received["gift"]}
 """)
 	await ctx.respond(embed=auto)
+	await update_commands("profile")
 
 @bot.user_command(name="Show profile")
 async def callbackname(ctx, member : discord.Member):
@@ -522,6 +570,7 @@ Waves : {p.received["wave"]}
 Gifts : {p.received["gift"]}
 """)
 	await ctx.respond(embed=auto)
+	await update_commands("profile_user")
 
 @bot.slash_command(name="myprofile", description="Sends your own profile")
 async def myprofile(ctx, description : Option(str, "Profile description", required=False, default=None), color : Option(str, "Profile Color", required=False, default=None, choices=VÄRIT_UP)):
@@ -560,6 +609,7 @@ Gifts : {p.received["gift"]}
 """)
 	auto.set_footer(text="/profilehelp")
 	await ctx.respond(embed=auto)
+	await update_commands("myprofile")
 
 
 #PET COMMAND SECTION
@@ -568,6 +618,7 @@ Gifts : {p.received["gift"]}
 async def pethelp(ctx):
 	viesti = discord.Embed(title = "Pet help message", description = "Here you can see Comfy Bots pet commands. These pets are global across servers.\n\nAvailable pets are cat, dog, bunny, squirrel, frog, turtle, elephant, polar bear, bear, tiger, mouse, sheep, chicken, rooster, monkey and pig\n\n`/pet` shows your pet.\n`/search` tries to find a pet for you.\n`/give` gives your pet away.\n`/feed` feeds food to your pet. You can buy food from `/shop`\n`/water` gives water to your pet\n`/train` spends time with your pet.\n\n**Pet Points**:four_leaf_clover:\nYou can use pet points to buy food for your pet\nYou can use `/points` to see your points.\nYou can use `/find` to get more points.\nYou can use `/shop` to see shop items and `/shop (item)` to buy the item.\nYou can use `/inventory` to see all your food\n\nIf you don't interact with your pet, it will lose health and might even die.\nYou can level up and increase happiness of your pet by interacting with it", color = green)
 	await ctx.respond(embed=viesti, ephemeral=True)
+	await update_commands("pethelp")
 
 
 @bot.slash_command(name="search", description="Search for a pet")
@@ -598,6 +649,7 @@ async def search(ctx):
 	Use `/pet` to see pet stats!
 	""", color = green)
 	await ctx.respond(embed=viesti)
+	await update_commands("search")
 
 
 
@@ -619,6 +671,7 @@ async def give(ctx):
 
 	viesti = discord.Embed( description = f"You succesfully reset your pet {p.name}", color = green)
 	await ctx.respond(embed=viesti)
+	await update_commands("give")
 
 
 @bot.slash_command(name="pet", description="Show your pet stats")
@@ -668,6 +721,7 @@ async def pet(ctx, name : Option(str, "Pet name", required=False, default=None))
 	viesti.add_field(name=f"Health", value=f"{p.health}/150")
 	viesti.add_field(name=f"Happiness", value=f"{p.happiness}/100")
 	await ctx.respond(embed=viesti)
+	await update_commands("pet")
 
 @bot.slash_command(name="feed", description="Feed your pet")
 async def feed(ctx, item : Option(str, "Item to feed", choices=FOODS_UP.keys())):
@@ -735,19 +789,20 @@ async def feed(ctx, item : Option(str, "Item to feed", choices=FOODS_UP.keys()))
 	else:
 		p = await get_pet(ctx.author)
 		
-		pet = await set_interaction(p.pet, current_time, ctx.author)
+		await set_interaction(p.pet, current_time, ctx.author)
 
 	await store_pet(ctx.author, p)
 	p = await get_pet(ctx.author)
 	if not await is_alive(ctx.author):
-		await set_interaction(p.pet, 0, ctx.author, True)
 		viesti = discord.Embed(description = f"Your pet {p.name} has passed away", color = green)
 		await ctx.respond(embed=viesti)
+		await set_interaction(p.pet, 0, ctx.author, True)
 		await reset_pet(ctx.author)
 		return
 
 	viesti = discord.Embed( description = f"You succesfully fed **{item_fix}** to your pet {p.name}", color = green)
 	await ctx.respond(embed=viesti)
+	await update_commands("feed")
 
 @bot.slash_command(name="water", description="Give water to your pet")
 async def water(ctx):
@@ -795,6 +850,7 @@ async def water(ctx):
 
 	viesti = discord.Embed( description = f"You succesfully gave water to your pet {p.name}", color = green)
 	await ctx.respond(embed=viesti)
+	await update_commands("water")
 
 
 @bot.slash_command(name="train", description="Spend time with your pet")
@@ -836,10 +892,12 @@ async def train(ctx):
 		viesti = discord.Embed(description = f"Your pet {p.name} has passed away", color = green)
 		await ctx.respond(embed=viesti)
 		await reset_pet(ctx.author)
+
 		return
 	
 
 	await feed_pet(ctx.author, 10, 1, 20)
+	await update_commands("train")
 
 	viesti = discord.Embed( description = f"You succesfully spent time with your pet {p.name}", color = green)
 	await ctx.respond(embed=viesti)
@@ -863,6 +921,7 @@ async def inventory(ctx):
 		viesti.description = "You don't have any food! Buy them from `/shop`"
 
 	await ctx.respond(embed=viesti)
+	await update_commands("inventory")
 
 
 
@@ -902,6 +961,7 @@ async def find(ctx):
 	sendable = random.choice(FIND_SENTENCES)
 	viesti = discord.Embed( description = sendable.replace("x", f"**{amt}**:four_leaf_clover:"), color = green)
 	await ctx.respond(embed=viesti)
+	await update_commands("find")
 
 
 @bot.slash_command(name="points", description="Show your pet points")
@@ -914,6 +974,7 @@ async def points(ctx):
 	You can use these pet points to buy from `/shop`
 	""", color = green)
 	await ctx.respond(embed=viesti)
+	await update_commands("points")
 
 @bot.slash_command(name="shop", description="Buy food for your pet")
 async def shop(ctx, item : Option(str, "Item to buy", choices=FOODS_UP.keys(), required=False, default=None)):
@@ -960,6 +1021,7 @@ async def shop(ctx, item : Option(str, "Item to buy", choices=FOODS_UP.keys(), r
 			await store_bank(ctx.author, b)
 			viesti = discord.Embed(description = f"You succesfully bought **{item_fix}**. Use `/feed` to give it to your pet", color = green)
 			await ctx.respond(embed=viesti)
+			await update_commands("shop")
 			return
 		else:
 			viesti = discord.Embed(description = f"Uh oh, you don't have enough points. Use `/find` to get more points", color = green)
@@ -1005,7 +1067,7 @@ async def shop(ctx, item : Option(str, "Item to buy", choices=FOODS_UP.keys(), r
 	""")
 	viesti.set_thumbnail(url="https://cdn.discordapp.com/attachments/900712260937322529/908351036467597394/shop.png")
 	await ctx.respond(embed=viesti)
-
+	await update_commands("shop")
 
 #FUNCTIONS
 
@@ -1176,6 +1238,15 @@ async def a_or_an(text):
 	vowels = ("a", "e", "i", "o", "u", "A", "E", "I", "O", "U")
 	return "an" if text[0] in vowels else "a"
 
+async def get_command_data():
+	with open('../files/json/command_usage.json', 'r') as f:
+		data = json.load(f)
+		return data
+
+async def dump_command_data(data):
+	with open('../files/json/command_usage.json', 'w') as f:
+		return json.dump(data, f, indent=4)
+
 async def get_pet_data():
 	with open('../files/json/pet_data.json', 'r') as f:
 		data = json.load(f)
@@ -1183,7 +1254,7 @@ async def get_pet_data():
 
 async def dump_pet_data(data):
 	with open('../files/json/pet_data.json', 'w') as f:
-		return json.dump(data, f)
+		return json.dump(data, f, indent=4)
 
 async def get_bank_data():
 	with open('../files/json/bank_data.json', 'r') as f:
@@ -1192,7 +1263,7 @@ async def get_bank_data():
 
 async def dump_bank_data(data):
 	with open('../files/json/bank_data.json', 'w') as f:
-		return json.dump(data, f)
+		return json.dump(data, f, indent=4)
 
 async def get_profile_data():
 	with open('../files/json/profile_data.json', 'r') as f:
@@ -1201,7 +1272,14 @@ async def get_profile_data():
 
 async def dump_profile_data(data):
 	with open('../files/json/profile_data.json', 'w') as f:
-		return json.dump(data, f)
+		return json.dump(data, f, indent=4)
+
+async def update_commands(command):
+	data = await get_command_data()
+	if command not in data:
+		data[command] = 0
+	data[command] += 1
+	await dump_command_data(data)
 
 async def open_pet(member):
 	data = await get_pet_data()
