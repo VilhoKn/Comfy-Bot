@@ -13,7 +13,7 @@ sys.path.append("/home/pi/Documents/")
 
 from bot_token import TOKEN, DBL_TOKEN
 
-import dbl
+import aiohttp
 from webhook import send_webhook
 import time
 import datetime
@@ -32,6 +32,7 @@ feed_seconds = 15
 
 custom_cooldowns = {}
 
+TEST_IDS = []
 
 WAVE_LINKS = ["https://c.tenor.com/NjsosaK61UIAAAAC/anime-girl.gif", "https://c.tenor.com/e48wByvWU-IAAAAC/anime-hi.gif", "https://c.tenor.com/S6V1PHV-PQUAAAAC/kuroha-shida-kuroha.gif", "https://c.tenor.com/MIXsMsU90KMAAAAC/hey-hello.gif", "https://c.tenor.com/o9Ak0TpPek0AAAAC/aikatsu-aikatsu-hello.gif", "https://c.tenor.com/ywCocDUt31QAAAAC/anime-wave.gif", "https://c.tenor.com/2mvMfV8_KW0AAAAC/kakashi-hatake-naruto.gif", "https://c.tenor.com/svW4PXq7zDYAAAAC/nanami-waving.gif", "https://c.tenor.com/H4xLf6epW-wAAAAC/anime-wave.gif", "https://c.tenor.com/aLPboFIM8K0AAAAd/smile-wave.gif", "https://c.tenor.com/lFM90Yjpl_4AAAAC/anime-wave.gif", "https://c.tenor.com/9l2tWpfn9yQAAAAd/anime-wave.gif", "https://c.tenor.com/rWN4ZHFLknoAAAAC/bye-hi.gif", "https://c.tenor.com/-AzbRX2AC2IAAAAC/liella-love-live.gif", "https://media3.giphy.com/media/F99PZtJC8Hxm0/giphy.gif?cid=ecf05e47uq1vi4qfuuy90yi8ytrxo15qafg6h1kbj8jxm6ci&rid=giphy.gif&ct=g", "https://i.gifer.com/bB.gif", "https://image.myanimelist.net/ui/5LYzTBVoS196gvYvw3zjwP0G4-gP6b2rXqiFUVocLJ8", "https://media3.giphy.com/media/S5L3aOgVqbzhK/giphy.gif", "https://i.imgur.com/xTsSaaC.gif", "https://i.imgur.com/wjaKPmk.gif", "https://i.imgur.com/foSkpOV.gif", "https://i.imgur.com/AlDSSsV.gif", "https://i.imgur.com/TXlp1YT.gif", "https://i.imgur.com/1FtD50k.gif", "https://i.imgur.com/lgbPwfk.gif"]
 
@@ -207,6 +208,7 @@ async def on_guild_join(guild):
 		await send_webhook(guild, bot, True)
 	except:
 		print("webhook error")
+	await update_guild_count()
 
 @bot.event
 async def on_guild_remove(guild):
@@ -218,6 +220,7 @@ async def on_guild_remove(guild):
 		await send_webhook(guild, bot, False)
 	except:
 		print("webhook error")
+	await update_guild_count()
 
 @bot.event
 async def on_ready():
@@ -1072,6 +1075,16 @@ async def shop(ctx, item : Option(str, "Item to buy", choices=FOODS_UP.keys(), r
 
 #FUNCTIONS
 
+async def update_guild_count():
+	if bot.user.id in TEST_IDS:
+		print("Logged in under a TEST_ID, not posting guild count to discord bot list.")
+        return
+    headers = {'Authorization': DBL_TOKEN}
+    data = {'server_count': len(bot.guilds)}
+    api_url = 'https://top.gg/api/bots/' + str(bot.user.id) + '/stats'
+    async with aiohttp.ClientSession() as session:
+        await session.post(api_url, data=data, headers=headers)
+    print("Posted guild count to discord bot list")
 
 async def set_interaction(p, time_, member, i=None):
 	data = await get_pet_data()
@@ -1430,6 +1443,5 @@ async def add_profile(author, member, item):
 
 #BOT RUN
 
-dblpy = dbl.DBLClient(bot, DBL_TOKEN, autopost=True)
 bot.run(TOKEN)
 
