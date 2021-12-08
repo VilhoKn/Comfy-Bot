@@ -22,15 +22,10 @@ async def send_webhook(g, b, t):
 		except Exception as e:
 			print(e)
 	embed.add_field(name="Total users", value=str(total_mem))
-	if t:
-		gg = []
-		for i in b.guilds:
-			gg.append(i.name)
-		ggg = "\n".join(gg)
-		embed.add_field(name="Guilds", value=ggg)
-	else:
+	if not t:
 		embed.title = f"{g.name}"
 		embed.color = 0xff000d
+		
 
 	hook.send(embed=embed)
 
