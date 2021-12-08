@@ -1108,11 +1108,11 @@ async def decay_stats(member, current_time):
 
 
 	if (cleanliness_difference / 60) >= 4:
-		subtract = int(cleanliness_difference / 15) # 20
+		subtract = int(cleanliness_difference / 20) # 20
 
 		data[str(member.id)]["pet"]["happiness"] -= subtract
 	else:
-		subtract = int(cleanliness_difference / 10) # 10
+		subtract = int(cleanliness_difference / 15) # 10
 
 		data[str(member.id)]["pet"]["happiness"] -= subtract
 
@@ -1121,34 +1121,23 @@ async def decay_stats(member, current_time):
 	if (saturation_difference / 60) >= 4:
         # Reduce their stat by 1 for every 30 min since they have fed their pet
 		if data[str(member.id)]["pet"]["happiness"] <= 0:
-			subtract = int(saturation_difference / 15) #15
+			subtract = int(saturation_difference / 20) #15
 
 			data[str(member.id)]["pet"]["health"] -= subtract
-																	# 16 24 4h
-																	# 84 63 25h
-																	# 100 64 41h
-																	#
-																	# 24 12 4h
-																	# 100 62 29h
-																	# 
-																	# 24 12 4h
-																	# 100 50  23h
-																	# 100 150 48h
-																	# 
 		else:
-			subtract = int(saturation_difference / 30) # 25
+			subtract = int(saturation_difference / 35) # 25
 
 			data[str(member.id)]["pet"]["health"] -= subtract
 
 	else:
 		if data[str(member.id)]["pet"]["happiness"] <= 0:
-			subtract = int(saturation_difference / 10) #15
+			subtract = int(saturation_difference / 20) #15
 
 			data[str(member.id)]["pet"]["health"] -= subtract
 
 
 		else:
-			subtract = int(saturation_difference / 20)
+			subtract = int(saturation_difference / 25)
 			data[str(member.id)]["pet"]["health"] -= subtract
 
 
