@@ -738,20 +738,10 @@ async def feed(ctx, item : Option(str, "Item to feed", choices=FOODS_UP.keys()))
 		await ctx.respond(embed=viesti)
 		return
 	
-	author_id = ctx.author.id
-	curr_time = int(time.time())
-	if author_id not in custom_cooldowns.keys():
-		custom_cooldowns[author_id] = {}
-	if "feed" not in custom_cooldowns[author_id].keys():
-		custom_cooldowns[author_id]["feed"] = curr_time
-	else:
-		new_time = curr_time - custom_cooldowns[author_id]["feed"]
-		if new_time < feed_seconds:
-			show = feed_seconds - new_time
-			viesti = discord.Embed( description = f"This command is on cooldown!\n**{show}s** left until you can use again", color = green)
-			await ctx.respond(embed=viesti, ephemeral=True)
-			return
-		custom_cooldowns[author_id]["feed"] = curr_time
+	result = await update_cooldowns(ctx.author, "feed")
+	if result:
+		await ctx.respond(embed=result)
+		return
 
 	item_fix = item.lower()
 
@@ -817,21 +807,10 @@ async def water(ctx):
 		viesti = discord.Embed(description = "You dont have a pet yet!", color = green)
 		await ctx.respond(embed=viesti)
 		return
-	author_id = ctx.author.id
-	curr_time = int(time.time())
-
-	if author_id not in custom_cooldowns.keys():
-		custom_cooldowns[author_id] = {}
-	if "water" not in custom_cooldowns[author_id].keys():
-		custom_cooldowns[author_id]["water"] = curr_time
-	else:
-		new_time = curr_time - custom_cooldowns[author_id]["water"]
-		if new_time < water_seconds:
-			show = water_seconds - new_time
-			viesti = discord.Embed( description = f"This command is on cooldown!\n**{show}s** left until you can use again", color = green)
-			await ctx.respond(embed=viesti, ephemeral=True)
-			return
-		custom_cooldowns[author_id]["water"] = curr_time	
+	result = await update_cooldowns(ctx.author, "water")
+	if result:
+		await ctx.respond(embed=result)
+		return
 
 	p = await get_pet(ctx.author)
 	current_time = int(time.time() / 60)
@@ -866,20 +845,10 @@ async def train(ctx):
 		viesti = discord.Embed(description = "You dont have a pet yet!", color = green)
 		await ctx.respond(embed=viesti)
 		return
-	author_id = ctx.author.id
-	curr_time = int(time.time())
-	if author_id not in custom_cooldowns.keys():
-		custom_cooldowns[author_id] = {}
-	if "train" not in custom_cooldowns[author_id].keys():
-		custom_cooldowns[author_id]["train"] = curr_time
-	else:
-		new_time = curr_time - custom_cooldowns[author_id]["train"]
-		if new_time < train_seconds:
-			show = train_seconds - new_time
-			viesti = discord.Embed( description = f"This command is on cooldown!\n**{show}s** left until you can use again", color = green)
-			await ctx.respond(embed=viesti, ephemeral=True)
-			return
-		custom_cooldowns[author_id]["train"] = curr_time
+	result = await update_cooldowns(ctx.author, "train")
+	if result:
+		await ctx.respond(embed=result)
+		return
 
 	p = await get_pet(ctx.author)
 	current_time = int(time.time() / 60)
@@ -933,20 +902,10 @@ async def inventory(ctx):
 
 @bot.slash_command(name="find", description="Find pet points")
 async def find(ctx):
-	author_id = ctx.author.id
-	curr_time = int(time.time())
-	if author_id not in custom_cooldowns.keys():
-		custom_cooldowns[author_id] = {}
-	if "find" not in custom_cooldowns[author_id].keys():
-		custom_cooldowns[author_id]["find"] = curr_time
-	else:
-		new_time = curr_time - custom_cooldowns[author_id]["find"]
-		if new_time < find_seconds:
-			show = find_seconds - new_time
-			viesti = discord.Embed( description = f"This command is on cooldown!\n**{show}s** left until you can use again", color = green)
-			await ctx.respond(embed=viesti, ephemeral=True)
-			return
-		custom_cooldowns[author_id]["find"] = curr_time
+	result = await update_cooldowns(ctx.author, "find")
+	if result:
+		await ctx.respond(embed=result)
+		return
 
 
 
@@ -1006,20 +965,10 @@ async def shop(ctx, item : Option(str, "Item to buy", choices=FOODS_UP.keys(), r
 
 		
 		if b.points >= cost:
-			author_id = ctx.author.id
-			curr_time = int(time.time())
-			if author_id not in custom_cooldowns.keys():
-				custom_cooldowns[author_id] = {}
-			if "shop" not in custom_cooldowns[author_id].keys():
-				custom_cooldowns[author_id]["shop"] = curr_time
-			else:
-				new_time = curr_time - custom_cooldowns[author_id]["shop"]
-				if new_time < shop_seconds:
-					show = shop_seconds - new_time
-					viesti = discord.Embed( description = f"This command is on cooldown!\n**{show}s** left until you can use again", color = green)
-					await ctx.respond(embed=viesti, ephemeral=True)
-					return
-				custom_cooldowns[author_id]["shop"] = curr_time
+			result = await update_cooldowns(ctx.author, "shop")
+			if result:
+				await ctx.respond(embed=result)
+				return
 			b.points -= cost
 			b.inventory[item_fix] += 1
 			await store_bank(ctx.author, b)
@@ -1427,7 +1376,21 @@ async def add_profile(author, member, item):
 
 	await store_profile(author, profile_account(sent=pa.sent, received=False, description=False, color=False))
 
-
+async def update_cooldowns(member, command):
+	member_id = member.id
+	curr_time = int(time.time())
+	if member_id not in custom_cooldowns.keys():
+		custom_cooldowns[member_id] = {}
+	if command not in custom_cooldowns[member_id].keys():
+		custom_cooldowns[member_id][command] = curr_time
+	else:
+		new_time = curr_time - custom_cooldowns[member_id][command]
+		if new_time < shop_seconds:
+			show = shop_seconds - new_time
+			viesti = discord.Embed( description = f"This command is on cooldown!\n**{show}s** left until you can use again", color = green)
+			return viesti
+		custom_cooldowns[member_id][command] = curr_time
+	return False
 
 
 #BOT RUN
