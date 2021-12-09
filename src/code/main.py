@@ -1027,13 +1027,13 @@ async def shop(ctx, item : Option(str, "Item to buy", choices=FOODS_UP.keys(), r
 async def update_guild_count():
 	if bot.user.id in TEST_IDS:
 		print("Logged in under a TEST_ID, not posting guild count to discord bot list.")
-        return
-    headers = {'Authorization': DBL_TOKEN}
-    data = {'server_count': len(bot.guilds)}
-    api_url = 'https://top.gg/api/bots/' + str(bot.user.id) + '/stats'
-    async with aiohttp.ClientSession() as session:
-        await session.post(api_url, data=data, headers=headers)
-    print("Posted guild count to discord bot list")
+		return
+	headers = {'Authorization': DBL_TOKEN}
+	data = {'server_count': len(bot.guilds)}
+	api_url = 'https://top.gg/api/bots/' + str(bot.user.id) + '/stats'
+	async with aiohttp.ClientSession() as session:
+		await session.post(api_url, data=data, headers=headers)
+	print("Posted guild count to discord bot list")
 
 async def set_interaction(p, time_, member, i=None):
 	data = await get_pet_data()
