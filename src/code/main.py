@@ -24,7 +24,7 @@ import random
 
 #SETUP
 
-cooldowns = {"train":60, "water":30, "find":60, "shop":25, "feed":15, "depression":86400}
+cooldowns = {"train":60, "water":30, "find":60, "shop":25, "feed":15, "depression":43200}
 
 custom_cooldowns = {}
 
@@ -236,13 +236,18 @@ async def on_message(message):
 		return
 	temp_msg = message.content.lower()
 	if temp_msg in ON_MESSAGE_TRIGGER_WORDS:
+		result = await update_cooldowns(message.author, "depression")
+		if result:
+			return
 		viesti = discord.Embed(title="Depression Help", description = f"Hey, I saw you were talking about sad things on {message.guild} and wanted to say that there are people that love and care about you! Hope you are okay.\n\nIf you want information about helplines for depressed and suicidal people use command `/ineedhelp`", color = c)
 		try:
 			channel = await message.author.create_dm()
 			await channel.send(embed=viesti)
+			await update_commands("depression")
 		except:
 			try:
 				await message.channel.send(embed=viesti, ephemeral=True)
+				await update_commands("depression")
 			except:
 				print("weird problem")
 		return
