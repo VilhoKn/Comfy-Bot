@@ -24,11 +24,7 @@ import random
 
 #SETUP
 
-train_seconds = 60
-water_seconds = 30
-find_seconds = 60
-shop_seconds = 25
-feed_seconds = 15
+cooldowns = {"train":60, "water":30, "find":60, "shop":25, "feed":15, "depression":86400}
 
 custom_cooldowns = {}
 
@@ -1385,8 +1381,9 @@ async def update_cooldowns(member, command):
 		custom_cooldowns[member_id][command] = curr_time
 	else:
 		new_time = curr_time - custom_cooldowns[member_id][command]
-		if new_time < shop_seconds:
-			show = shop_seconds - new_time
+		cooldown_seconds = cooldowns[command]
+		if new_time < cooldown_seconds:
+			show = cooldown_seconds - new_time
 			viesti = discord.Embed( description = f"This command is on cooldown!\n**{show}s** left until you can use again", color = green)
 			return viesti
 		custom_cooldowns[member_id][command] = curr_time
