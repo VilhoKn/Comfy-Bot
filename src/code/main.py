@@ -741,7 +741,7 @@ async def feed(ctx, item : Option(str, "Item to feed", choices=FOODS_UP.keys()))
 	
 	result = await update_cooldowns(ctx.author, "feed")
 	if result:
-		await ctx.respond(embed=result)
+		await ctx.respond(embed=result, ephemeral=True)
 		return
 
 	item_fix = item.lower()
@@ -810,7 +810,7 @@ async def water(ctx):
 		return
 	result = await update_cooldowns(ctx.author, "water")
 	if result:
-		await ctx.respond(embed=result)
+		await ctx.respond(embed=result, ephemeral=True)
 		return
 
 	p = await get_pet(ctx.author)
@@ -848,7 +848,7 @@ async def train(ctx):
 		return
 	result = await update_cooldowns(ctx.author, "train")
 	if result:
-		await ctx.respond(embed=result)
+		await ctx.respond(embed=result, ephemeral=True)
 		return
 
 	p = await get_pet(ctx.author)
@@ -905,7 +905,7 @@ async def inventory(ctx):
 async def find(ctx):
 	result = await update_cooldowns(ctx.author, "find")
 	if result:
-		await ctx.respond(embed=result)
+		await ctx.respond(embed=result, ephemeral=True)
 		return
 
 
@@ -968,7 +968,7 @@ async def shop(ctx, item : Option(str, "Item to buy", choices=FOODS_UP.keys(), r
 		if b.points >= cost:
 			result = await update_cooldowns(ctx.author, "shop")
 			if result:
-				await ctx.respond(embed=result)
+				await ctx.respond(embed=result, ephemeral=True)
 				return
 			b.points -= cost
 			b.inventory[item_fix] += 1
