@@ -690,6 +690,13 @@ async def pet(ctx, name : Option(str, "Pet name", required=False, default=None))
 		await ctx.respond(embed=viesti)
 		return
 
+	current_time = int(time.time() / 60)
+	await decay_stats(ctx.author, current_time)
+
+	p = await get_pet(ctx.author)
+		
+	await set_interaction(p.pet, current_time, ctx.author)
+
 	p = await get_pet(ctx.author)
 
 	if not await is_alive(ctx.author):
@@ -713,12 +720,7 @@ async def pet(ctx, name : Option(str, "Pet name", required=False, default=None))
 			p.name = name
 			await store_pet(ctx.author, p)
 
-	current_time = int(time.time() / 60)
-	await decay_stats(ctx.author, current_time)
-
-	p = await get_pet(ctx.author)
-		
-	await set_interaction(p.pet, current_time, ctx.author)
+	
 
 	p = await get_pet(ctx.author)
 
