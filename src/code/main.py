@@ -240,7 +240,7 @@ async def on_message(message):
 			result = await update_cooldowns(message.author, "depression")
 			if result:
 				return
-			print(f"Depression detected on {message.guild}, message content was '{message.content}'")
+			print(f"Depression detected on '{message.guild}' by '{message.author}', message content was '{message.content}'")
 			viesti = discord.Embed(title="Depression Help", description = f"Hey, I saw you were talking about sad things on {message.guild} and wanted to say that there are people that love and care about you! Hope you are okay.\n\nIf you want information about helplines for depressed and suicidal people use command `/ineedhelp`", color = c)
 			try:
 				channel = await message.author.create_dm()
