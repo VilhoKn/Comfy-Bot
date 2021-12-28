@@ -1,8 +1,8 @@
 from dhooks import Webhook, Embed
 import asyncio
-async def send_webhook(g, b, t):
+async def send_webhook(g, b, t, w):
 	
-	hook = Webhook("https://discord.com/api/webhooks/911031528337850388/4BG6nqFvrXEI0Se08_V3OQm9KoBL6NzBOHJiAqk6-_fxhpsGXrAuALkEiQ_ZPTijf88i")
+	hook = Webhook(w)
 	
 	embed = Embed(
 		title=g.name,

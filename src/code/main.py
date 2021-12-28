@@ -11,7 +11,7 @@ import sys
 
 sys.path.append("/home/pi/Documents/")
 
-from bot_token import TOKEN, DBL_TOKEN
+from bot_token import TOKEN, DBL_TOKEN, WEBHOOK_URL
 
 import aiohttp
 from webhook import send_webhook
@@ -201,8 +201,9 @@ async def on_guild_join(guild):
 	except:
 		print(f"Comfy joined '{guild.name}', Count: ERROR")
 	try:
-		await send_webhook(guild, bot, True)
-	except:
+		await send_webhook(guild, bot, True, WEBHOOK_URL)
+	except Exception as e:
+		print(e)
 		print("webhook error")
 	await update_guild_count()
 
@@ -213,8 +214,9 @@ async def on_guild_remove(guild):
 	except:
 		print(f"Comfy left '{guild.name}', Count: ERROR")
 	try:
-		await send_webhook(guild, bot, False)
-	except:
+		await send_webhook(guild, bot, False,WEBHOOK_URL)
+	except Exception as e:
+		print(e)
 		print("webhook error")
 	await update_guild_count()
 
