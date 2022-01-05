@@ -1239,9 +1239,11 @@ async def update_commands(command, guild):
 	g_string = f"'{guild.id}','{guild.name}'"
 	if command not in data:
 		data[command] =  {}
+		data[command]["total"] = 0
 	if g_string not in data[command]:
 		data[command][g_string] = 0
 	data[command][g_string] += 1
+	data[command]["total"] += 1
 	await dump_command_data(data)
 
 async def open_pet(member):
