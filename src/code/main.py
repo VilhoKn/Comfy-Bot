@@ -324,18 +324,14 @@ async def quote(ctx):
 async def hug(ctx, member : Option(discord.Member, "Member to hug")):
 	await open_profile(ctx.author)
 	await open_profile(member)
-	pref = f"{ctx.author.mention} hugged x y"
 	if ctx.author.id != member.id:
-		pref = pref.replace("x", f"{member.mention}")
-		pref = pref.replace("y", "(つˆ⌣ˆ)つ⊂(・﹏・⊂)")
+		msg = f"{ctx.author.mention} hugged {member.mention} (つˆ⌣ˆ)つ⊂(・﹏・⊂)"
 		await add_profile(ctx.author, member, "hug")
 	else:
-		pref = pref.replace("x", "themselves")
-		pref = pref.replace("y", "(*・ω・)")
+		msg = f"{ctx.author.mention} hugged themselves (*・ω・)"
 	viesti = discord.Embed(description = pref, color = c)
 	viesti.set_image(url=random.choice(HUG_LINKS))
 	await ctx.respond(embed=viesti)
-	await update_commands("hug", ctx.guild)
 
 @bot.user_command(name="Hug this person!")
 async def callbackname(ctx, member : discord.Member):
