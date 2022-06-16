@@ -232,30 +232,6 @@ async def on_ready():
 	await bot.change_presence(status=discord.Status.idle, activity=discord.Activity(type=discord.ActivityType.listening,name='Comfy Vibes'))
 	print(f"\nComfy Bot logged in as: {bot.user}", end="\n\n")
 
-@bot.event
-async def on_message(message):
-	if message.author.bot:
-		return
-	temp_msg = message.content.lower()
-	for i in ON_MESSAGE_TRIGGER_WORDS:
-		if i in temp_msg:
-			result = await update_cooldowns(message.author, "depression")
-			if result:
-				return
-			print(f"Depression detected on '{message.guild}' by '{message.author}', message content was '{message.content}'")
-			viesti = discord.Embed(title="Depression Help", description = f"Hey, I saw you were talking about sad things on {message.guild} and wanted to say that there are people that love and care about you! Hope you are okay.\n\nIf you want information about helplines for depressed and suicidal people use command `/ineedhelp`", color = c)
-			try:
-				channel = await message.author.create_dm()
-				await channel.send(embed=viesti)
-				await update_commands("depression", message.guild)
-			except:
-				try:
-					await message.channel.send(embed=viesti, ephemeral=True)
-					await update_commands("depression", message.guild)
-				except:
-					print("weird problem")
-			return
-
 #COMMANDS
 
 @bot.slash_command(name="dice", description="Rolls the dice")
@@ -273,9 +249,9 @@ async def coinflip(ctx):
 	await ctx.respond(embed=viesti)
 	await update_commands("coinflip", ctx.guild)
 
-@bot.slash_command(name="ineedhelp", description="Sends an info message about depression helplines in dms")
+@bot.slash_command(name="ineedhelp", description="Sends an info message about US and EU depression helplines in dms")
 async def ineedhelp(ctx):
-	viesti = discord.Embed(title="I Need Help Helplines", description = f"Here is information about helplines for depressed and suicidal people", color = c)
+	viesti = discord.Embed(title="I Need Help Helplines", description = f"Here is information about US and EU helplines for depressed and suicidal people", color = c)
 	viesti.add_field(name="Child Helplines (EU)", value="""
 Telephone: 116 111
 
@@ -329,7 +305,7 @@ async def hug(ctx, member : Option(discord.Member, "Member to hug")):
 		await add_profile(ctx.author, member, "hug")
 	else:
 		msg = f"{ctx.author.mention} hugged themselves (*・ω・)"
-	viesti = discord.Embed(description = pref, color = c)
+	viesti = discord.Embed(description = msg, color = c)
 	viesti.set_image(url=random.choice(HUG_LINKS))
 	await ctx.respond(embed=viesti)
 
@@ -483,7 +459,6 @@ async def profilehelp(ctx):
 @bot.slash_command(name="help", description="Sends Comfy Bot help message")
 async def help(ctx):
 	viesti = discord.Embed(title = "Comfy Bot Help Message", description = "Comfy Bot is made to make others happy!\n It has tons of fun commands you can use!\nComfy uses `/` slash commmands like most popular bots.", color = c)
-	viesti.add_field(name="Word detection", value="Comfy bot has word detection that sends\n hope you're okay messages to the users sending depressing messages.", inline=False)
 	viesti.add_field(name=":frame_photo: Images", value="`/cat` `/dog` `/bunny`\n`/duck` `/meme`\n`/cheerup`")
 	viesti.add_field(name=":busts_in_silhouette: Community", value="`/colorrole`\n`/ineedhelp` `/quote`\n`/dice` `/coinflip`")
 	viesti.add_field(name=":exclamation:Actions", value="`/hug` `/kiss`\n`/wave` `/gift`")
@@ -717,9 +692,6 @@ async def pet(ctx, name : Option(str, "Pet name", required=False, default=None))
 			p = await get_pet(ctx.author)
 			p.name = name
 			await store_pet(ctx.author, p)
-
-	
-
 	p = await get_pet(ctx.author)
 
 	viesti = discord.Embed(title = p.name, description = f"_**{await first_up(p._type)}**_", color = green)
